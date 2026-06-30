@@ -1,0 +1,38 @@
+{
+  "name": "authsystem",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SCO-TClor/authentication-system.git"
+  },
+  "keywords": [],
+  "author": "Pedro da Silveira Thiago",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SCO-TClor/authentication-system/issues"
+  },
+  "homepage": "https://github.com/SCO-TClor/authentication-system#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^9.0.1",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.0.1",
+    "@types/nodemailer": "^8.0.1",
+    "@types/pg": "^8.20.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
