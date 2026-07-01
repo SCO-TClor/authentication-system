@@ -1,20 +1,19 @@
 import * as http from 'http';
 import { dataDrain } from './utils/dataDrainer';
 import { sendData, SignUpData, verifier } from './@types/httpInterface';
-import { loginService, refreshService, signupService, verifyEmailService, verifyService } from './auth.service';
 import { StatusCode } from './@types/headWriter';
 import { HttpError } from './utils/ThrowError';
 import { debuggerController } from './utils/debuggers';
-import { codeCase } from './utils/endPoints';
+import { codeCase } from './utils/response';
 import { emailInternalServerError } from './utils/emailSender';
 import { setCookies } from './utils/cookieSetter';
+import { auth } from './core/auth.instance';
 
 const archive = 'auth.controller.ts';
 
 async function sendVerifyEmail(     // Email verify sender
     req: http.IncomingMessage,
     res: http.ServerResponse,
-    routes: Array<string>,
     debug: boolean,
     step: number
 ) {
@@ -23,13 +22,11 @@ async function sendVerifyEmail(     // Email verify sender
     
     try {
         const { email } = JSON.parse(await dataDrain(req));
-
-        const response = await verifyService(email, debug, step);
+        const response = await auth.verifyService(email);
 
         if(response === true) {
             codeCase(res, 'AUTH_013', debug, step);
         };
-
         return;
     } catch (error) {
         if(debug) console.log('!--!> auth.controller / Error <!--!');
@@ -74,7 +71,7 @@ async function verifyEmail(         // Email verifier
 
         console.log(verify_combo);
         
-        if(await verifyEmailService(verify_combo, debug, step)) {
+        if(await auth.verifyEmailService(verify_combo)) {
             codeCase(res, 'AUTH_015', debug, step);
             return;
         };
@@ -119,7 +116,7 @@ async function signup(              // Sign up
             password: password.trim()
         };
 
-        await signupService(data, debug, step);
+        await auth.signupService(data);
 
         codeCase(res, 'AUTH_018', debug, step);
         return;
@@ -152,20 +149,19 @@ async function login(               // Log in
 
     try {
         const { email, password } = JSON.parse(await dataDrain(req));
+        if(!email || !password) {
+            codeCase(res, 'AUTH_001', debug, step);
+            return;
+        };
+        
         const data: sendData = {
             email: email.trim(),
             password: password.trim()
         };
 
-        if(!email || !password) {
-            codeCase(res, 'AUTH_001', debug, step);
-            return;
-        };
-
-        console.log(data);
+        const result = await auth.login(data);
 
         // Sucesso:
-        const result = await loginService(data, debug, step);
         console.log('resultado:', result);
 
         setCookies(res, 'access_cookie', result.token, 'm', 15, '/', true);
@@ -220,7 +216,7 @@ async function refresh(             // Refresh token
             return;
         };
 
-        const token = await refreshService(Auth.refresh_cookie, debug, step);
+        const token = await auth.refreshService(Auth.refresh_cookie);
 
         setCookies(res, 'access_cookie', token, 'm', 15, '/', true);
         

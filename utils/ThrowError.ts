@@ -1,5 +1,5 @@
 import { StatusCode as SC } from "../@types/headWriter";
-import { code } from "./endPoints";
+import { code } from "./response";
 
 class HttpError extends Error {
     statuscode: number;

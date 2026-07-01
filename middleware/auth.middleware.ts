@@ -1,7 +1,7 @@
 import * as http from 'http';
 import * as jwt from 'jsonwebtoken';
 import { HttpError } from '../utils/ThrowError';
-import { codeCase } from '../utils/endPoints';
+import { codeCase } from '../utils/response';
 
 interface JwtPayload {
     userId: string,
@@ -18,6 +18,7 @@ interface middleware extends JwtPayload, tenantUser {};
 async function authMiddleware(
     req: http.IncomingMessage,
     res: http.ServerResponse,
+    envS: string,
     debug: boolean,
     step: number
 ) {
@@ -28,7 +29,7 @@ async function authMiddleware(
 
     try {
         const cookie = req.headers.cookie || '';
-        const secret = process.env.JWT_SECRET || '';
+        const secret = envS || '';
 
         let Auth: {
             [key :string]: string
