@@ -1,6 +1,37 @@
 # AuthSystem
 
-Biblioteca de autenticação em TypeScript para login, cadastro, refresh token e verificação de e-mail com PostgreSQL, bcrypt, JWT e Nodemailer.
+Sistema de autenticação modular em TypeScript para aplicações Node.js.
+
+O AuthSystem fornece uma camada completa de autenticação com:
+- Cadastro e login de usuários
+- JWT access/refresh token
+- Verificação de e-mail
+- Hash seguro de senhas
+- Integração com PostgreSQL
+- Arquitetura baseada em Repository Pattern
+
+Construído para ser reutilizável e adaptável em diferentes aplicações.
+
+## Tecnologias
+
+- TypeScript
+- Node.js
+- PostgreSQL
+- JWT
+- bcrypt
+- Nodemailer
+
+## Roadmap
+
+- [x] Cadastro de usuários
+- [x] Login
+- [x] JWT
+- [x] Refresh Token
+- [x] Verificação por e-mail
+- [x] Middleware
+- [ ] Suporte a múltiplos bancos
+- [ ] Testes automatizados
+- [ ] Publicação no npm
 
 ## Instalação
 
@@ -46,9 +77,11 @@ O envio de e-mail usa Nodemailer com as credenciais do `.env`.
 
 Se estiver usando Gmail, prefira senha de aplicativo.
 
-## Parte Mais Pesada Da Integração
+## Arquitetura e Extensibilidade
 
-A parte mais trabalhosa é adaptar o banco escolhido ao schema esperado pela biblioteca. Se você trocar PostgreSQL, ORM ou driver, o principal ajuste fica no repository e no arquivo de conexão.
+AO AuthSystem utiliza uma camada Repository para desacoplar a lógica de autenticação da persistência de dados.
+
+Isso permite substituir o banco ou ORM realizando alterações apenas na camada de acesso aos dados.
 
 ## Como Conseguir o Passcode
 
